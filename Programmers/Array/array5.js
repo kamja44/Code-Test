@@ -2,14 +2,15 @@
 
 function solution(arr1, arr2) {
   const result = [];
+
   for (let i = 0; i < arr1.length; i++) {
     // 행
     const array = [];
     for (let j = 0; j < arr2[0].length; j++) {
       // 열
-      // 내적 구해야함
       let sum = 0;
       for (let k = 0; k < arr2.length; k++) {
+        // 내적 계산
         sum += arr1[i][k] * arr2[k][j];
       }
       array.push(sum);
