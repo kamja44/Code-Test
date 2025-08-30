@@ -11,10 +11,20 @@ function solution(answers) {
   let scores = [0, 0, 0];
   array.forEach((item, index) => {
     answers.forEach((answer, i) => {
-      console.log(`item`, item);
-      console.log(`answer`, answer);
+      if (item[i % item.length] === answer) {
+        scores[index]++;
+      }
     });
   });
+
+  const maxScore = Math.max(...scores);
+  const result = [];
+  scores.forEach((score, index) => {
+    if (score === maxScore) {
+      result.push(index + 1);
+    }
+  });
+  return result;
 }
 
 console.log(solution([1, 2, 3, 4, 5])); // [1]
