@@ -14,19 +14,17 @@ function solution(N, stages) {
         failCount++;
       }
     }
-    // failArray.push(failCount / maxLength);
     failArray.push({
       stage: i,
-      rate: failCount / maxLength,
+      failRate: failCount / maxLength,
     });
-    maxLength = maxLength - failCount;
+    maxLength -= failCount;
   }
   failArray.sort((a, b) => {
-    if (a.rate !== b.rate) {
-      return b.rate - a.rate;
-    } else {
-      return a.stage - b.stage;
+    if (a.failRate !== b.failRate) {
+      return b.failRate - a.failRate;
     }
+    return a.stage - b.stage;
   });
   return failArray.map((item) => item.stage);
 }
