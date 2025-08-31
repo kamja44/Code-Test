@@ -10,26 +10,27 @@
 function solution(dirs) {
   let x = 0,
     y = 0;
-
   const visited = new Set();
-  visited.add(`${x}, ${y}`);
+
   for (let dir of dirs) {
-    let newX = x;
-    let newY = y;
+    let prevX = x; // 추가
+    let prevY = y; // 추가
+
     if (dir === "U") {
-      newY += 1;
+      y += 1; // newY → y로 변경
     } else if (dir === "D") {
-      newY -= 1;
+      y -= 1; // newY → y로 변경
     } else if (dir === "R") {
-      newX += 1;
+      x += 1; // newX → x로 변경
     } else if (dir === "L") {
-      newX -= 1;
+      x -= 1; // newX → x로 변경
     }
 
-    if (newX < 5 && newX > -5 && newY < 5 && newY > -5) {
-      x = newX;
-      y = newY;
-      visited.add(`${x}, ${y}`);
+    if (x <= 5 && x >= -5 && y <= 5 && y >= -5) {
+      visited.add(`${prevX},${prevY}->${x},${y}`); // 경로 형태로 변경
+    } else {
+      x = prevX; // 추가
+      y = prevY; // 추가
     }
   }
 
