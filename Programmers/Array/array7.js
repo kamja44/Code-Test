@@ -10,32 +10,32 @@
 function solution(dirs) {
   let x = 0,
     y = 0;
-  const visited = new Set();
+  const path = new Set();
 
-  for (let dir of dirs) {
-    let prevX = x; // 추가
-    let prevY = y; // 추가
+  for (const dir of dirs) {
+    let prevX = x;
+    let prevY = y;
 
     if (dir === "U") {
-      y += 1; // newY → y로 변경
+      y++;
     } else if (dir === "D") {
-      y -= 1; // newY → y로 변경
-    } else if (dir === "R") {
-      x += 1; // newX → x로 변경
+      y--;
     } else if (dir === "L") {
-      x -= 1; // newX → x로 변경
+      x--;
+    } else if (dir === "R") {
+      x++;
     }
 
     if (x <= 5 && x >= -5 && y <= 5 && y >= -5) {
-      visited.add(`${prevX},${prevY}->${x},${y}`); // 경로 형태로 변경
+      path.add(`${prevX}, ${prevY}, ${x}, ${y}`);
     } else {
-      x = prevX; // 추가
-      y = prevY; // 추가
+      x = prevX;
+      y = prevY;
     }
   }
-
-  return visited.size;
+  return path.size;
 }
 
 console.log(solution("ULURRDLLU")); // 7
 console.log(solution("LULLLLLU")); // 7
+console.log(solution("UDUD")); // 2
