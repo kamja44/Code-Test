@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Read(C:\\Users\\Yes\\Desktop\\study/**)"
+      "Read(C:\\Users\\Yes\\Desktop\\study/**)",
+      "mcp__obsidian__search_notes"
     ],
     "deny": [],
     "ask": []
