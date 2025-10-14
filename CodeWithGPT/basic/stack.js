@@ -3,8 +3,8 @@ class Stack {
     this.items = [];
   }
 
-  push(element) {
-    this.items.push(element);
+  push(value) {
+    this.items.push(value);
   }
 
   pop() {
@@ -15,18 +15,15 @@ class Stack {
   }
 
   peek() {
-    if (this.items.length === 0) {
-      return null;
-    }
     return this.items[this.items.length - 1];
-  }
-
-  isEmpty() {
-    return this.items.length === 0;
   }
 
   size() {
     return this.items.length;
+  }
+
+  isEmpty() {
+    return this.items.length === 0;
   }
 
   clear() {
