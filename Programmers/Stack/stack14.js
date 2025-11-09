@@ -13,26 +13,74 @@
 
 function solution(n, k, cmd) {
   let current = k;
-  const stack = [];
-  const result = new Array(n).fill(true);
-  for (const string of cmd) {
-    const str = string.split(" ");
-    if (str[0] === "U") {
-      current -= parseInt(str[1]);
-    } else if (str[0] === "D") {
-      current += parseInt(str[1]);
-    } else if (str[0] === "C") {
-      result[current] = false;
-      stack.push(current);
-      if (current === n - 1) {
-        current -= 1;
+  const deletedArray = [];
+  const table = new Array(n).fill(true);
+
+  function UpFn(value) {
+    let count = 0;
+
+    while (count < value) {
+      current--;
+      if (table[current]) {
+        count++;
       }
-    } else if (str[0] === "Z") {
-      const index = stack.pop();
-      result[index] = true;
     }
   }
-  return result.map((item) => (item ? "O" : "X"));
+
+  function DownFn(value) {
+    let count = 0;
+    while (count < value) {
+      current++;
+      if (table[current]) {
+        count++;
+      }
+    }
+  }
+
+  function DeleteFn() {
+    deletedArray.push(current);
+    table[current] = false;
+    let found = false;
+
+    for (let i = current + 1; i < n; i++) {
+      if (table[i]) {
+        current = i;
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      for (let i = current - 1; i >= 0; i--) {
+        if (table[i]) {
+          current = i;
+          found = true;
+          break;
+        }
+      }
+    }
+  }
+
+  function restoreFn() {
+    const deleted = deletedArray.pop();
+    table[deleted] = true;
+  }
+
+  for (const command of cmd) {
+    const [op, value] = command.split(" ");
+
+    if (op === "U") {
+      UpFn(value);
+    } else if (op === "D") {
+      DownFn(value);
+    } else if (op === "C") {
+      DeleteFn();
+    } else if (op === "Z") {
+      restoreFn();
+    }
+  }
+
+  return table.map((item) => (item ? "O" : "X")).join("");
 }
 
 const cmd1 = ["D 2", "C", "U 3", "C", "D 4", "C", "U 2", "Z", "Z"]; // OOOOXOOO

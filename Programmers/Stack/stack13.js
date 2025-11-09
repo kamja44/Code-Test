@@ -10,24 +10,38 @@
 // 크레인을 모두 작동시킨 후 사라진 인형 개수를 반환하는 solution 함수를 완성하시오
 
 function solution(board, moves) {
-  const stack = [];
+  const basket = [];
   let removeCount = 0;
-  for (let i = 0; i < moves.length; i++) {
-    const index = moves[i] - 1;
-    for (let j = 0; j < board.length; j++) {
-      if (board[j][index] !== 0) {
-        const doll = board[j][index];
-        board[j][index] = 0;
-        if (stack.length > 0 && stack[stack.length - 1] === doll) {
-          stack.pop();
-          removeCount += 2;
-        } else {
-          stack.push(doll);
-        }
-        break;
+
+  function pickDoll(column) {
+    for (let row = 0; row < board.length; row++) {
+      if (board[row][column] !== 0) {
+        const doll = board[row][column];
+        board[row][column] = 0;
+        return doll;
       }
     }
+    return null;
   }
+
+  function putInBasket(doll) {
+    if (doll === null) {
+      return;
+    }
+    if (basket.length > 0 && basket[basket.length - 1] === doll) {
+      basket.pop();
+      removeCount += 2;
+    } else {
+      basket.push(doll);
+    }
+  }
+
+  for (const move of moves) {
+    const column = move - 1;
+    const doll = pickDoll(column);
+    putInBasket(doll);
+  }
+
   return removeCount;
 }
 const board = [

@@ -2,17 +2,13 @@
 
 function solution(number) {
   const stack = [];
+
   while (number > 0) {
     stack.push(number % 2);
     number = Math.floor(number / 2);
   }
-  //   return stack.reverse(); solution 1.
-  // solution 2.
-  const result = [];
-  while (stack.length > 0) {
-    result.push(stack.pop());
-  }
-  return result;
+
+  return stack.reverse();
 }
 
 console.log(solution(10)); // 1010

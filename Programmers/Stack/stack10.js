@@ -7,39 +7,42 @@
 // 대괄호, 중괄호, 소괄호로 이뤄진 문자열 s가 매개변수로 주어진다.
 // 이 s를 왼쪽으로 x칸만큼 회전시켰을 때 s가 올바른 괄호 문자열이 되게 하는 x의 개수를 반환하는 solution()함수를 완성하시오.
 function solution(s) {
-  let total = 0;
-  const sLength = s.length;
-  for (let i = 0; i < sLength; i++) {
+  let count = 0;
+
+  // 검증
+  function isValid(str) {
     const stack = [];
-    let isRight = true;
-    for (let j = 0; j < sLength; j++) {
-      const condition = s[(i + j) % sLength];
-      if (condition === "(" || condition === "[" || condition === "{") {
-        stack.push(condition);
+
+    for (char of str) {
+      if (char === "(" || char === "{" || char === "[") {
+        stack.push(char);
       } else {
         if (stack.length === 0) {
-          isRight = false;
-          break;
-        } else {
-          const top = stack[stack.length - 1];
-          if (condition === "]" && top === "[") {
-            stack.pop();
-          } else if (condition === "}" && top === "{") {
-            stack.pop();
-          } else if (condition === ")" && top === "(") {
-            stack.pop();
-          } else {
-            isRight = false;
-            break;
-          }
+          return false;
+        }
+        const top = stack.pop();
+        if (
+          (char === ")" && top !== "(") ||
+          (char === "]" && top !== "[") ||
+          (char === "}" && top !== "{")
+        ) {
+          return false;
         }
       }
     }
-    if (isRight === true && stack.length === 0) {
-      total++;
+    return stack.length === 0;
+  }
+
+  // 문자열 회전
+  for (let i = 0; i < s.length; i++) {
+    const rotated = s.slice(i) + s.slice(0, i);
+
+    if (isValid(rotated)) {
+      count++;
     }
   }
-  return total;
+
+  return count;
 }
 
 console.log(solution("[](){}")); // 3

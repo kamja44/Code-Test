@@ -6,19 +6,17 @@
 function solution(strings) {
   const stack = [];
 
-  for (const string of strings) {
-    if (string === "(") {
-      stack.push(string);
-    } else if (string === ")") {
-      if (stack.length !== 0) {
-        stack.pop();
-      } else {
+  for (const str of strings) {
+    if (str === "(") {
+      stack.push(str);
+    } else if (str === ")") {
+      if (stack.length === 0) {
         return false;
       }
+      stack.pop();
     }
   }
-
-  return stack.length === 0 ? true : false;
+  return stack.length === 0;
 }
 
 console.log(solution("(())()")); // true

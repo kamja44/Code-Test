@@ -7,12 +7,16 @@
 // 문자열 S가 baabaa => bbaa => aa => 1반환
 function solution(s) {
   const stack = [];
-  for (let char of s) {
-    const top = stack[stack.length - 1];
-    if (char === top && stack.length > 0) {
-      stack.pop();
-    } else {
+  for (const char of s) {
+    if (stack.length === 0) {
       stack.push(char);
+    } else {
+      const top = stack[stack.length - 1];
+      if (char === top) {
+        stack.pop();
+      } else {
+        stack.push(char);
+      }
     }
   }
   return stack.length === 0 ? 1 : 0;
