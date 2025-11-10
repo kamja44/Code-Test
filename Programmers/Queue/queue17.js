@@ -11,13 +11,14 @@
 // cards1과 cards2에 적힌 단어들로 goal을 만들수 있으면 "Yes", 없다면 "No"를 반환하는 solution 함수를 완성하시오
 
 function solution(cards1, cards2, goal) {
-  let index1 = 0;
-  let index2 = 0;
+  let card1Index = 0;
+  let card2Index = 0;
+
   for (let i = 0; i < goal.length; i++) {
-    if (index1 < cards1.length && cards1[index1] === goal[i]) {
-      index1++;
-    } else if (index2 < cards2.length && cards2[index2] === goal[i]) {
-      index2++;
+    if (card1Index < cards1.length && cards1[card1Index] === goal[i]) {
+      card1Index++;
+    } else if (card2Index < cards2.length && cards2[card2Index] === goal[i]) {
+      card2Index++;
     } else {
       return "No";
     }

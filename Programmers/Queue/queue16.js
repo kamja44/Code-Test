@@ -6,12 +6,10 @@
 // 각 배포마다 몇 개의 기능이 배포되는지를 반환하도록 solution 함수를 구현하시오
 
 function solution(progresses, speeds) {
-  const answer = [];
-
+  const result = [];
   const days = progresses.map((item, index) => {
     return Math.ceil((100 - item) / speeds[index]);
   });
-  console.log(days);
 
   let maxDay = days[0];
   let count = 1;
@@ -20,14 +18,14 @@ function solution(progresses, speeds) {
     if (days[i] <= maxDay) {
       count++;
     } else {
-      // 새로운 배포 시작
-      answer.push(count);
-      maxDay = days[i];
+      result.push(count);
       count = 1;
+      maxDay = days[i];
     }
   }
-  answer.push(count);
-  return answer;
+  result.push(count);
+
+  return result;
 }
 
 console.log(solution([93, 30, 55], [1, 30, 5])); // [2, 1]

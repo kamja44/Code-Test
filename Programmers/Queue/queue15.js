@@ -6,18 +6,18 @@
 // N과 K가 주어질 때 마지막에 살아있는 사람의 번호를 반환하는 solution()함수를 구현해주세요
 
 function solution(N, K) {
-  const array = new Array(N).fill().map((item, index) => index + 1);
+  const array = new Array(N).fill(0).map((_, index) => index + 1);
+
   let currentIndex = 0;
 
   while (array.length > 1) {
-    // K번째 인덱스 계산(원형 구조 고려)
-    const removeIndex = (currentIndex + K - 1) % array.length;
+    currentIndex = (currentIndex + K - 1) % array.length;
 
-    array.splice(removeIndex, 1);
+    array.splice(currentIndex, 1);
 
-    // 다음 시작 위치 업데이트
-    currentIndex = removeIndex % array.length;
+    currentIndex = currentIndex % array.length;
   }
+
   return array[0];
 }
 
