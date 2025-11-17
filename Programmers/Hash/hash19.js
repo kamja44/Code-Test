@@ -4,19 +4,21 @@
 // 문자열이 있으면 true, 없으면 false
 
 function solution(stringList, queryList) {
-  const hash = new Map();
+  const hashMap = new Map();
   const result = [];
+
   for (let i = 0; i < stringList.length; i++) {
-    hash.set(stringList[i], i);
+    hashMap.set(stringList[i], i);
   }
 
   for (let i = 0; i < queryList.length; i++) {
-    if (hash.has(queryList[i])) {
+    if (hashMap.has(queryList[i])) {
       result.push(true);
     } else {
       result.push(false);
     }
   }
+
   return result;
 }
 

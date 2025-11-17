@@ -8,33 +8,44 @@
 // 베스트 앨범에 들어갈 노래의 고유 번호를 순서대로 반환하는 solution 함수를 완성하시오
 
 function solution(genres, plays) {
-  const map = new Map();
-  const array = [];
+  const musicMap = new Map();
+  const musicArray = [];
   for (let i = 0; i < genres.length; i++) {
-    array.push([genres[i], plays[i], i]);
-    map.set(genres[i], (map.get(genres[i]) || 0) + plays[i]);
+    musicMap.set(genres[i], (musicMap.get(genres[i]) || 0) + plays[i]);
+    musicArray.push({
+      genres: genres[i],
+      id: i,
+      plays: plays[i],
+    });
   }
+  console.log(musicMap);
+  console.log(musicArray);
+
+  const array = [...musicMap.entries()].sort((a, b) => b[1] - a[1]);
   console.log(array);
-  console.log(map);
-  const sortedGenres = [...map.entries()].sort((a, b) => b[1] - a[1]);
-  console.log(`sorted`, sortedGenres);
 
   const result = [];
-
-  for (const [genre, totalPlays] of sortedGenres) {
-    const generSongs = array.filter((song) => song[0] === genre);
-    console.group(`${genre} 장르 노래들: `, generSongs);
-
-    generSongs.sort((a, b) => {
-      if (a[1] !== b[1]) {
-        return b[1] - a[1];
+  array.map((item, index) => {
+    const genre = item[0];
+    const sortArray = musicArray
+      .filter((item) => item.genres === genre)
+      .sort((a, b) => {
+        if (a.plays === b.plays) {
+          return a.id - b.id;
+        }
+        return b.plays - a.plays;
+      });
+    let count = 0;
+    for (const list of sortArray) {
+      if (count < 2) {
+        result.push(list.id);
+        count++;
       }
-      return a[2] - b[2];
-    });
+    }
+    console.log("===");
+    console.log(sortArray);
+  });
 
-    const selected = generSongs.slice(0, 2);
-    result.push(...selected.map((song) => song[2]));
-  }
   return result;
 }
 
