@@ -4,7 +4,6 @@ function solution(arr, target) {
   for (let i = 0; i < arr.length; i++) {
     const complete = target - arr[i];
 
-    // 해시맵에 보완수가 있는지 확인
     if (hashMap.has(complete)) {
       return true;
     }

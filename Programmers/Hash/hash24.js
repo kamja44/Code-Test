@@ -11,28 +11,45 @@
 // 각 유저별로 처리 결과 메일을 받은 횟수를 배열에 담아 반환하는 solution()함수를 구현하시오.
 
 function solution(list, report, k) {
-  const set = new Set();
-  const resultMap = new Map();
+  const reportSet = new Set();
+  const userMap = new Map();
+
+  // 1. 유저별 메일 카운트 초기화
   for (const name of list) {
-    resultMap.set(name, 0);
-  }
-  for (const repo of report) {
-    const [repoter, cheater] = repo.split(" ");
-    set.add(`${repoter} ${cheater}`);
-  }
-  const banList = new Map();
-  for (const list of set) {
-    const [repoter, cheater] = list.split(" ");
-    banList.set(cheater, (banList.get(cheater) || 0) + 1);
+    userMap.set(name, 0);
   }
 
-  for (const list of set) {
-    const [repoter, cheater] = list.split(" ");
-    if (banList.get(cheater) >= k) {
-      resultMap.set(repoter, (resultMap.get(repoter) || 0) + 1);
+  // 2. 중복 제거
+  for (const item of report) {
+    // 변수명 충돌 방지를 위해 item으로 변경
+    const [name, cheat] = item.split(" ");
+    reportSet.add(`${name} ${cheat}`);
+  }
+
+  // 3. 각 유저가 몇 번 신고당했는지 집계
+  const reportedCount = new Map();
+  for (const reportItem of reportSet) {
+    const [name, cheat] = reportItem.split(" ");
+    reportedCount.set(cheat, (reportedCount.get(cheat) || 0) + 1); // ✅ cheat으로 수정
+  }
+
+  // 4. k번 이상 신고당한 사람 찾기
+  const bannedArray = [];
+  for (const [name, count] of reportedCount) {
+    if (count >= k) {
+      bannedArray.push(name);
     }
   }
-  return list.map((name) => resultMap.get(name));
+
+  // 5. 정지된 유저를 신고한 사람의 카운트 증가
+  for (const reportItem of reportSet) {
+    const [reporter, cheater] = reportItem.split(" ");
+    if (bannedArray.includes(cheater)) {
+      userMap.set(reporter, userMap.get(reporter) + 1);
+    }
+  }
+
+  return [...userMap.values()];
 }
 
 const list1 = ["muzi", "frodo", "apeach", "neo"];

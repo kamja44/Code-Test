@@ -21,27 +21,28 @@ function solution(want, number, discount) {
   for (let i = 0; i < want.length; i++) {
     wantMap.set(want[i], number[i]);
   }
-  let buyCount = 0;
+  let validDays = 0;
 
-  for (let start = 0; start <= discount.length - 10; start++) {
-    const discountMap = new Map();
-    for (let i = start; i < start + 10; i++) {
-      discountMap.set(discount[i], (discountMap.get(discount[i]) || 0) + 1);
-    }
-
-    let canBuy = true;
-
-    for (const [item, needCount] of wantMap) {
-      if ((discountMap.get(item) || 0) < needCount) {
-        canBuy = false;
-        break;
+  function isMatch(wantMap, discountMap) {
+    for (const [item, count] of wantMap) {
+      if (discountMap.get(item) !== count) {
+        return false;
       }
     }
-    if (canBuy) {
-      buyCount++;
+    return true;
+  }
+
+  for (let i = 0; i <= discount.length - 10; i++) {
+    const discountMap = new Map();
+    for (let j = i; j < i + 10; j++) {
+      discountMap.set(discount[j], (discountMap.get(discount[j]) || 0) + 1);
+    }
+
+    if (isMatch(wantMap, discountMap)) {
+      validDays++;
     }
   }
-  return buyCount;
+  return validDays;
 }
 
 console.log(

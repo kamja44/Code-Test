@@ -5,20 +5,20 @@
 // 참가자 중에는 동명이인이 있을 수 있습니다.
 
 function solution(participant, completion) {
-  const result = new Map();
+  const hashmap = new Map();
 
   for (const name of participant) {
-    result.set(name, (result.get(name) || 0) + 1);
+    hashmap.set(name, (hashmap.get(name) || 0) + 1);
   }
 
   for (const name of completion) {
-    if (result.has(name)) {
-      result.set(name, result.get(name) - 1);
+    if (hashmap.has(name)) {
+      hashmap.set(name, hashmap.get(name) - 1);
     }
   }
 
-  for (const [name, count] of result) {
-    if (count === 1) {
+  for (const [name, count] of hashmap) {
+    if (count !== 0) {
       return name;
     }
   }

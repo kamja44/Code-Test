@@ -10,26 +10,34 @@
 // 모든 기록이 처리된 당므 최종으로 방을 개설한 사람이 보는 메시지를 문자열 형태로 반환하는 solution 함수를 완성하시오
 
 function solution(record) {
-  const user = new Map();
-  const array = [];
+  const userMap = new Map();
+  const userArray = [];
+
   for (const list of record) {
     const [order, id, name] = list.split(" ");
-    if (order === "Enter") {
-      user.set(id, name);
-      array.push([id, order]);
-    } else if (order === "Leave") {
-      array.push([id, order]); // Leave는 닉네임 업데이트 없이 기록만
-    } else if (order === "Change") {
-      user.set(id, name);
+
+    userMap.set(id, name);
+
+    if (order === "Change") {
+      userMap.set(id, name);
+    }
+    userArray.push({
+      order,
+      id,
+    });
+  }
+
+  const result = [];
+  for (let i = 0; i < userArray.length; i++) {
+    const finalName = userMap.get(userArray[i].id);
+    if (userArray[i].order === "Enter") {
+      result.push(`${finalName}님이 들어왔습니다.`);
+    } else if (userArray[i].order === "Leave") {
+      result.push(`${finalName}님이 나갔습니다.`);
     }
   }
-  return array.map(([id, order]) => {
-    if (order === "Enter") {
-      return `${user.get(id)}님이 들어왔습니다.`;
-    } else if (order === "Leave") {
-      return `${user.get(id)}님이 나갔습니다.`;
-    }
-  });
+
+  return result;
 }
 
 const record = [

@@ -8,95 +8,47 @@
 // course => 스카피가 추가하고 싶어하는 코스 요리를 구성하는 단품 메뉴들의 개수가 담긴 배열
 // 스카피가 새로 추가하게 될 코스 요리의 메뉴 구성을 문자열 형태로 배열에 담아 반환하는 solution 함수를 완성하시오
 
-function getCombinations(str, n) {
-  const result = [];
-  const chars = str.split("").sort();
-
-  function backTrack(start, current) {
-    if (current.length === n) {
-      result.push(current.join(""));
-      return;
-    }
-
-    for (let i = start; i < chars.length; i++) {
-      current.push(chars[i]);
-      backTrack(i + 1, current);
-      current.pop();
-    }
-  }
-  backTrack(0, []);
-  return result;
-}
-
-function isIncluded(order, combination) {
-  for (let char of combination) {
-    if (!order.includes(char)) {
-      return false;
-    }
-  }
-  return true;
-}
-
-function countAllCombinations(orders, length) {
-  const combinationCount = {};
-
-  for (let order of orders) {
-    const combinations = getCombinations(order, length);
-
-    for (let combination of combinations) {
-      if (combinationCount[combination]) {
-        combinationCount[combination]++;
-      } else {
-        combinationCount[combination] = 1;
-      }
-    }
-  }
-  return combinationCount;
-}
-// 테스트
-const orders = ["ABCFG", "AC", "CDE", "ACDE", "BCFG", "ACDEH"];
-
-function findBestCombinations(combinationCount) {
-  const result = [];
-
-  const validCombinations = {};
-  for (let combination in combinationCount) {
-    if (combinationCount[combination] >= 2) {
-      validCombinations[combination] = combinationCount[combination];
-    }
-  }
-
-  if (Object.keys(validCombinations).length === 0) {
-    return result;
-  }
-
-  const maxCount = Math.max(...Object.values(validCombinations));
-
-  for (let combination in validCombinations) {
-    if (validCombinations[combination] === maxCount) {
-      result.push(combination);
-    }
-  }
-  return result;
-}
-
-// 테스트
-const countResult = { AC: 4, BC: 2, CD: 3, AB: 1, DE: 2 };
-// 예상 결과: ["AC"] (4번으로 최대)
-
-const countResult2 = { AC: 2, BC: 2, CD: 1 };
-// 예상 결과: ["AC", "BC"] (둘 다 2번으로 최대)
-
 function solution(orders, course) {
   const result = [];
 
-  for (let count of course) {
-    const combinationCount = countAllCombinations(orders, count);
+  function getCombinations(array, size) {
+    if (size === 1) {
+      return array.map((item) => [item]);
+    }
 
-    const bestCombinations = findBestCombinations(combinationCount);
+    const combinations = [];
 
-    result.push(...bestCombinations);
+    array.forEach((current, index, origin) => {
+      const rest = origin.slice(index + 1);
+      const combis = getCombinations(rest, size - 1);
+      combinations.push(...combis.map((combi) => [current, ...combi]));
+    });
+    return combinations;
   }
+
+  course.forEach((courseSize) => {
+    const menuCount = {};
+
+    orders.forEach((order) => {
+      const items = order.split("").sort();
+      const combinations = getCombinations(items, courseSize);
+
+      combinations.forEach((combination) => {
+        const menu = combination.join("");
+        menuCount[menu] = (menuCount[menu] || 0) + 1;
+      });
+    });
+
+    const maxCount = Math.max(...Object.values(menuCount));
+
+    if (maxCount >= 2) {
+      for (const [menu, count] of Object.entries(menuCount)) {
+        if (count === maxCount) {
+          result.push(menu);
+        }
+      }
+    }
+  });
 
   return result.sort();
 }
