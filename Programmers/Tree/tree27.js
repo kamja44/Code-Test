@@ -2,7 +2,7 @@ class Node {
   constructor(key) {
     this.left = null;
     this.right = null;
-    this.val = key;
+    this.value = key;
   }
 }
 
@@ -15,22 +15,20 @@ class BST {
     if (!this.root) {
       this.root = new Node(key);
     } else {
-      let curr = this.root;
+      let current = this.root;
       while (true) {
-        // 삽입 하려는 값이 현재 노드의 값보다 작은 경우 왼쪽 자식 노드로 이동
-        if (key < curr.val) {
-          if (curr.left) {
-            curr = curr.left;
+        if (key < current.value) {
+          if (current.left) {
+            current = current.left;
           } else {
-            curr.left = new Node(key);
+            current.left = new Node(key);
             break;
           }
         } else {
-          // 삽입 하려는 값이 현재 노드의 값보다 큰 경우 오른쪽 자식 노드로 이동
-          if (curr.right) {
-            curr = curr.right;
+          if (current.right) {
+            current = current.right;
           } else {
-            curr.right = new Node(key);
+            current.right = new Node(key);
             break;
           }
         }
@@ -39,30 +37,31 @@ class BST {
   }
 
   search(key) {
-    let curr = this.root;
+    let current = this.root;
 
-    while (curr && curr.val !== key) {
-      if (key < curr.val) {
-        curr = curr.left;
+    while (current && current.value !== key) {
+      if (key < current.value) {
+        current = current.left;
       } else {
-        curr = curr.right;
+        current = current.right;
       }
     }
-    return curr;
+
+    return current;
   }
 }
 
 function solution(list, searchList) {
-  const bst = new BST();
+  const tree = new BST();
 
   for (const key of list) {
-    bst.insert(key);
+    tree.insert(key);
   }
 
   const result = [];
 
-  for (const searchValue of searchList) {
-    if (bst.search(searchValue)) {
+  for (const value of searchList) {
+    if (tree.search(value)) {
       result.push(true);
     } else {
       result.push(false);
