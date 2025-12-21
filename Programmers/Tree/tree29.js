@@ -20,25 +20,26 @@ function solution(enroll, referral, seller, amount) {
     profitMap.set(enroll[i], 0);
   }
 
-  function getProfit(name, amount) {
+  function getProfice(name, price) {
     if (name === "-") {
       return null;
     }
 
-    const profit = Math.floor(amount * 0.1); // 부모가 가져갈 돈
-    if (profit < 1) {
-      profitMap.set(name, profitMap.get(name) + amount); // 부모가 가져갈돈이 1원 미만이면 다가져감
+    const giveToParent = Math.floor(price * 0.1);
+    const keep = price - giveToParent;
+
+    if (giveToParent < 1) {
+      profitMap.set(name, profitMap.get(name) + price);
       return null;
     }
 
-    const rest = amount - profit;
-
-    profitMap.set(name, profitMap.get(name) + rest);
-    getProfit(parentMap.get(name), profit);
+    const parent = parentMap.get(name);
+    profitMap.set(name, profitMap.get(name) + keep);
+    getProfice(parent, giveToParent);
   }
 
   for (let i = 0; i < seller.length; i++) {
-    getProfit(seller[i], amount[i] * 100);
+    getProfice(seller[i], amount[i] * 100);
   }
 
   return enroll.map((name) => profitMap.get(name));
